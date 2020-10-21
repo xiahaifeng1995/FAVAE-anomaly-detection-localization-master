@@ -19,7 +19,7 @@ device = torch.device('cuda' if use_cuda else 'cpu')
 
 
 def main():
-    parser = argparse.ArgumentParser(description='VAE anomaly detection')
+    parser = argparse.ArgumentParser(description='FAVAE anomaly detection')
     parser.add_argument('--obj', type=str, default='.')
     parser.add_argument('--data_type', type=str, default='mvtec')
     parser.add_argument('--data_path', type=str, default='')
@@ -56,14 +56,14 @@ def main():
         torch.cuda.manual_seed_all(args.seed)
 
     args.prefix = time_file_str()
-
     args.save_dir = './' + args.data_type + '/' + args.obj + '/vgg_feature' + '/seed_{}/'.format(args.seed)
-
+    
     # data augmentation
     if not os.path.exists(args.aug_dir) and args.do_aug:
         os.makedirs(args.aug_dir)
         img_list = generate_image_list(args)
         augment_images(img_list, args)
+    
     args.train_data_path = './train_patches'
 
     if not os.path.exists(args.save_dir):
@@ -116,7 +116,7 @@ def main():
             break
 
         if epoch % 10 == 0:
-            save_sample = os.path.join(args.save_dir, '{}-images.jpg'.format(epoch))
+            save_sample = os.path.join(args.save_dir, '{}val-images.jpg'.format(epoch))
             save_sample2 = os.path.join(args.save_dir, '{}test-images.jpg'.format(epoch))
             save_snapshot(x_normal_fixed, x_test_fixed, model, save_sample, save_sample2, log)
 
@@ -128,8 +128,7 @@ def main():
 def train(args, model, teacher, epoch, train_loader, optimizer, log):
     model.train()
     teacher.eval()
-    mse_losses = AverageMeter()
-    kld_losses = AverageMeter()
+    losses = AverageMeter()
     MSE_loss = nn.MSELoss(reduction='sum')
 
     for (data, _, _) in tqdm(train_loader):
@@ -146,13 +145,12 @@ def train(args, model, teacher, epoch, train_loader, optimizer, log):
             s_act = model.adapter[i](s_activations[-(i + 1)])
             mse_loss += MSE_loss(s_act, t_activations[i])
         loss = mse_loss + args.kld_weight * kld_loss
-        mse_losses.update(mse_loss.sum().item(), data.size(0))
-        kld_losses.update(kld_loss.item(), data.size(0))
-
+        losses.update(loss.sum().item(), data.size(0))
+ 
         loss.backward()
         optimizer.step()
 
-    print_log(('Train Epoch: {} Mse_loss: {:.6f} Kld_loss: {:.6f}'.format(epoch, mse_losses.avg, kld_losses.avg)), log)
+    print_log(('Train Epoch: {} Loss: {:.6f}'.format(epoch, losses.avg)), log)
 
 
 def val(args, model, teacher, epoch, val_loader, log):
@@ -176,7 +174,7 @@ def val(args, model, teacher, epoch, val_loader, log):
             loss = mse_loss + args.kld_weight * kld_loss
             losses.update(loss.item(), data.size(0))
 
-    print_log(('Valid Epoch: {} loss: {:.6f}'.format(epoch, losses.avg)), log)
+    print_log(('Val Epoch: {} loss: {:.6f}'.format(epoch, losses.avg)), log)
 
     return losses.avg
 
