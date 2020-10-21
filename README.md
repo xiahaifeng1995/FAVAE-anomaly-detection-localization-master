@@ -1,7 +1,7 @@
 # FAVAE anomaly detection
 This is an implementation of the paper [Anomaly localization by modeling perceptual features](https://arxiv.org/pdf/2008.05369.pdf)
 <p align="center">
-    <img src="imgs/pic1.jpg" width="500"\>
+    <img src="imgs/pic1.jpg" width="600"\>
 </p>
 
 ## Requirement
@@ -20,13 +20,13 @@ python train.py --obj bottle --do_aug
 ## Results
 
 <p align="center">
-    <img src="imgs/pic2.png" width="500"\>
+    <img src="imgs/pic2.jpg" width="600"\>
 </p>
 <p align="center">
-    <img src="imgs/pic3.png" width="500"\>
+    <img src="imgs/pic3.jpg" width="600"\>
 </p>
 <p align="center">
-    <img src="imgs/pic4.png" width="500"\>
+    <img src="imgs/pic4.jpg" width="600"\>
 </p>
 
 
