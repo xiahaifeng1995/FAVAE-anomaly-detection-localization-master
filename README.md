@@ -28,5 +28,7 @@ MVTec AD datasets : Download from [MVTec website](https://www.mvtec.com/company/
 
 ## Reference
 [1] David Dehaene, Pierre Eline. *Anomaly localization by modeling perceptual features*. https://arxiv.org/pdf/2008.05369.pdf
+
 [2] https://github.com/byungjae89/SPADE-pytorch
+
 [3] https://github.com/plutoyuxie/AutoEncoder-SSIM-for-unsupervised-anomaly-detection-
