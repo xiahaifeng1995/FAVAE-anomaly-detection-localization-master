@@ -5,8 +5,11 @@ This is an implementation of the paper [Anomaly localization by modeling percept
 </p>
 
 ## Requirement
-* pytorch==1.5
+* python == 3.7
+* pytorch == 1.5
 * tqdm
+* sklearn
+* matplotlib
 
 ## Datasets
 MVTec AD datasets : Download from [MVTec website](https://www.mvtec.com/company/research/datasets/mvtec-ad/)
