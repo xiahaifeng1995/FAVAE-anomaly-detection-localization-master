@@ -11,6 +11,12 @@ This is an implementation of the paper [Anomaly localization by modeling percept
 ## Datasets
 MVTec AD datasets : Download from [MVTec website](https://www.mvtec.com/company/research/datasets/mvtec-ad/)
 
+## Code example
+* bottle
+```python
+python train.py --obj bottle --do_aug
+```
+
 ## Results
 
 <p align="center">
